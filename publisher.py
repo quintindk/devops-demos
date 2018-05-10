@@ -2,7 +2,8 @@
 import time
 import pika
 
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+#connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq-service'))
 channel = connection.channel()
 channel.queue_declare(queue='hello')
 

@@ -86,7 +86,7 @@ FROM python:3
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install pika
 
 COPY . .
 
@@ -99,7 +99,7 @@ FROM python:3
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install pika
 
 COPY . .
 
@@ -116,6 +116,15 @@ docker run -it --rm --name py-publisher py-publisher
 docker run -it --rm --name py-subscriber py-subscriber
 ```
 
+```bash
+export DOCKER_ID_USER="username"
+docker login
+docker tag py-publisher $DOCKER_ID_USER/py-publisher
+docker push $DOCKER_ID_USER/py-publisher
+docker tag py-subscriber $DOCKER_ID_USER/py-subscriber
+docker push $DOCKER_ID_USER/py-subscriber
+
+```
 
 ## Operations
 
@@ -182,8 +191,11 @@ metadata:
 spec:
   ports:
   - port: 5672
+    name: rabbitmq
   - port: 15672
+    name: management
   - port: 25672
+    name: gossip
   selector:
     app: rabbitmq-pubsub
     component: rabbitmq
@@ -219,7 +231,7 @@ spec:
 #### Deploy to Minikube
 
 ```bash
-kubectl create .
+kubectl create -f .
 ```
 
 Check that Rabbit MQ is running [http://localhost:15672/#/](http://localhost:15672/#/)
