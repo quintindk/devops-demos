@@ -191,14 +191,18 @@ metadata:
 spec:
   ports:
   - port: 5672
+    targetPort: 35672
     name: rabbitmq
-  - port: 15672
+  - port: 36672
+    targetPort: 15672
     name: management
-  - port: 25672
+  - port: 37672
+    targetPort: 25672
     name: gossip
   selector:
     app: rabbitmq-pubsub
     component: rabbitmq
+  type: NodePort
 ```
 
 ```yaml
