@@ -169,5 +169,30 @@ sudo apt install -y kubectl
 
 ```bash
 az group create -l westeurope -n aks-resource-group
-az aks create -g aks-resource-group -n aks-cluster --kubernetes-version 1.12.6
+az aks create --resource-group=aks-resource-group \
+  --name=aks-cluster \
+  --node-vm-size=Standard_DS1_v2 \
+  --node-count=5 \
+  --generate-ssh-keys
+az aks install-cli
+az aks get-credentials --resource-group netstar-k8s-rg --name netstar-k8s-cluster
 ```
+
+```bash
+kubectl get nodes
+kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
+az aks browse --resource-group netstar-k8s-rg --name netstar-k8s-cluster
+```
+
+```bash
+curl -LO https://git.io/get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
+```
+
+```bash
+helm init
+helm install stable/rabbitmq
+```
+
+[https://github.com/helm/charts/tree/master/stable/rabbitmq](https://github.com/helm/charts/tree/master/stable/rabbitmq)
